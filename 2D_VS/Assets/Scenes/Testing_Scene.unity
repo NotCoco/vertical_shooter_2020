@@ -706,6 +706,12 @@ PrefabInstance:
       propertyPath: aim
       value: 
       objectReference: {fileID: 1199635669}
+    - target: {fileID: 1166871710918368718, guid: 027ba67852c4f6343a84794b6ba0c9e7,
+        type: 3}
+      propertyPath: projectilePref
+      value: 
+      objectReference: {fileID: 4225899296202281101, guid: e160de7b9767e284cb5b26e4a207b0fa,
+        type: 3}
     - target: {fileID: 1166871712096314356, guid: 027ba67852c4f6343a84794b6ba0c9e7,
         type: 3}
       propertyPath: m_BodyType

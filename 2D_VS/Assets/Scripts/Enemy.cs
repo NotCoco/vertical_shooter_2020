@@ -7,9 +7,13 @@ public class Enemy : MonoBehaviour
     public int collisionDamage = 1;
     public int attackDamage = 1;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         AimController.AddToList(this);
+    }
+    void Start()
+    {
+
     }
 
     // Update is called once per frame

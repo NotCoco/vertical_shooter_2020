@@ -9,6 +9,7 @@ public class CannonController : MonoBehaviour
     private bool touchStart = false; // joystick movement bool
     // Start is called before the first frame update
     // Start is called before the first frame update
+    public bool isMoving = false;
     private Rigidbody2D rigbody;
     public int currentHealth = 5;
     public Transform outerJoy;
@@ -27,6 +28,7 @@ public class CannonController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         { // when the screen is initially tapped
             touchStart = true;
+            isMoving = true;
             //startJPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10.00f));
             startJPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
             innerJoy.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(startJPos.x, startJPos.y, 10.00f));
@@ -42,6 +44,7 @@ public class CannonController : MonoBehaviour
         else
         {
             touchStart = false;
+            isMoving = false;
         }
     }
 
