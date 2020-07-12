@@ -10,6 +10,9 @@ public class CannonController : MonoBehaviour
     // Start is called before the first frame update
     // Start is called before the first frame update
     private Rigidbody2D rigbody;
+    public int currentHealth = 5;
+    public Transform outerJoy;
+    public Transform innerJoy;
 
     public float speed = 0.1f;
     void Start()
@@ -26,10 +29,14 @@ public class CannonController : MonoBehaviour
             touchStart = true;
             //startJPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10.00f));
             startJPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+            innerJoy.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(startJPos.x, startJPos.y, 10.00f));
+            outerJoy.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(startJPos.x, startJPos.y, 10.00f));
+            innerJoy.GetComponent<SpriteRenderer>().enabled = true;
+            outerJoy.GetComponent<SpriteRenderer>().enabled = true;
         }
         if (Input.GetMouseButton(0))
         {
-            //endJPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10.00f));
+
             endJPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         }
         else
@@ -44,10 +51,26 @@ public class CannonController : MonoBehaviour
         {
             Vector2 offset = endJPos - startJPos;
             Vector2 direction = Vector2.ClampMagnitude(offset, 1.0f);
-
+            Vector2 offset2 = Vector2.ClampMagnitude(offset, 35.0f); // determines how far the inner joystick can move
             Vector2 t = transform.position;
-            rigbody.MovePosition(t + direction * 0.08f);
+            if (offset.magnitude > 30.00f)
+            {
+                rigbody.MovePosition(t + direction * 0.08f);
+            }
+            Vector2 realPos = new Vector2(startJPos.x + direction.x * Mathf.Abs(offset2.x), startJPos.y + direction.y * Mathf.Abs(offset2.y));
+
+            innerJoy.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(realPos.x - 7.00f, realPos.y, 10.00f));
 
         }
+        else
+        {
+            innerJoy.GetComponent<SpriteRenderer>().enabled = false;
+            outerJoy.GetComponent<SpriteRenderer>().enabled = false;
+        }
+    }
+
+    public void changeHealth(int damage)
+    {
+        currentHealth -= damage;
     }
 }
