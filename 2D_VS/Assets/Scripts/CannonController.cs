@@ -9,11 +9,15 @@ public class CannonController : MonoBehaviour
     private bool touchStart = false; // joystick movement bool
     public bool isMoving = false;
     private Rigidbody2D rigbody;
-    public int currentHealth = 5;
+    public int currentHealth;
+    public int maxHealth = 5;
     public Transform outerJoy;
     public Transform innerJoy;
     public float cameraDistance = 10.00f;
     public float speed = 0.08f;
+    public float timeInvincible = 2.0f;
+    bool isInvincible;
+    float invincibleTimer;
     void Start()
     {
         rigbody = GetComponent<Rigidbody2D>();
@@ -43,6 +47,12 @@ public class CannonController : MonoBehaviour
         {
             setTouchStart(false);
             setIsMoving(false);
+        }
+        if (isInvincible)
+        {
+            invincibleTimer -= Time.deltaTime;
+            if (invincibleTimer < 0)
+                isInvincible = false;
         }
     }
 
@@ -105,6 +115,15 @@ public class CannonController : MonoBehaviour
 
     public void changeHealth(int damage)
     {
-        currentHealth -= damage;
+        if (damage < 0)
+        {
+            if (isInvincible)
+                return;
+
+            isInvincible = true;
+            invincibleTimer = timeInvincible;
+        }
+
+        currentHealth = Mathf.Clamp(currentHealth + damage, 0, maxHealth);
     }
 }

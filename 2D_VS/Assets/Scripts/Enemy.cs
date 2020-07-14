@@ -33,7 +33,7 @@ public class Enemy : MonoBehaviour
         CannonController cannon = other.gameObject.GetComponent<CannonController>();
         if (cannon != null)
         {
-            cannon.changeHealth(collisionDamage);
+            cannon.changeHealth(-collisionDamage);
         }
     }
 }
