@@ -7,15 +7,13 @@ public class CannonController : MonoBehaviour
     private Vector2 startJPos; // the starting position of the joystick
     private Vector2 endJPos; // the ending position
     private bool touchStart = false; // joystick movement bool
-    // Start is called before the first frame update
-    // Start is called before the first frame update
     public bool isMoving = false;
     private Rigidbody2D rigbody;
     public int currentHealth = 5;
     public Transform outerJoy;
     public Transform innerJoy;
-
-    public float speed = 0.1f;
+    public float cameraDistance = 10.00f;
+    public float speed = 0.08f;
     void Start()
     {
         rigbody = GetComponent<Rigidbody2D>();
@@ -27,14 +25,14 @@ public class CannonController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         { // when the screen is initially tapped
-            touchStart = true;
-            isMoving = true;
-            //startJPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10.00f));
+            setTouchStart(true);
+            setIsMoving(true);
+
             startJPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-            innerJoy.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(startJPos.x, startJPos.y, 10.00f));
-            outerJoy.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(startJPos.x, startJPos.y, 10.00f));
-            innerJoy.GetComponent<SpriteRenderer>().enabled = true;
-            outerJoy.GetComponent<SpriteRenderer>().enabled = true;
+            innerJoy.transform.position = screenToWorldCoordinates(new Vector2(startJPos.x, startJPos.y));
+            outerJoy.transform.position = screenToWorldCoordinates(new Vector2(startJPos.x, startJPos.y));
+            spriteEnabled(innerJoy, true);
+            spriteEnabled(outerJoy, true);
         }
         if (Input.GetMouseButton(0))
         {
@@ -43,8 +41,8 @@ public class CannonController : MonoBehaviour
         }
         else
         {
-            touchStart = false;
-            isMoving = false;
+            setTouchStart(false);
+            setIsMoving(false);
         }
     }
 
@@ -58,18 +56,51 @@ public class CannonController : MonoBehaviour
             Vector2 t = transform.position;
             if (offset.magnitude > 30.00f)
             {
-                rigbody.MovePosition(t + direction * 0.08f);
+                rigbody.MovePosition(t + direction * speed);
             }
             Vector2 realPos = new Vector2(startJPos.x + direction.x * Mathf.Abs(offset2.x), startJPos.y + direction.y * Mathf.Abs(offset2.y));
 
-            innerJoy.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(realPos.x - 7.00f, realPos.y, 10.00f));
+            innerJoy.transform.position = screenToWorldCoordinates(new Vector2(realPos.x - 7.00f, realPos.y));
 
         }
         else
         {
-            innerJoy.GetComponent<SpriteRenderer>().enabled = false;
-            outerJoy.GetComponent<SpriteRenderer>().enabled = false;
+            spriteEnabled(innerJoy, false);
+            spriteEnabled(outerJoy, false);
         }
+    }
+
+    private Vector3 screenToWorldCoordinates(Vector2 screenCoordinates)
+    {
+        return Camera.main.ScreenToWorldPoint(new Vector3(screenCoordinates.x, screenCoordinates.y, cameraDistance));
+    }
+
+    /**
+    Sets the sprite renderer.enabled value to the given bool
+    Takes tranform associated with the sprite
+    **/
+    private void spriteEnabled(Transform transformOfSprite, bool newValue)
+    {
+        transformOfSprite.GetComponent<SpriteRenderer>().enabled = newValue;
+    }
+    public void setTouchStart(bool b)
+    {
+        touchStart = b;
+    }
+
+    public bool getTouchStart()
+    {
+        return touchStart;
+    }
+
+    public void setIsMoving(bool b)
+    {
+        isMoving = b;
+    }
+
+    public bool getIsMoving()
+    {
+        return isMoving;
     }
 
     public void changeHealth(int damage)

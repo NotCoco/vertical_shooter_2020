@@ -49,7 +49,7 @@ public class AimController : MonoBehaviour
         float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
         aimTransform.eulerAngles = new Vector3(0, 0, angle - 90);
 
-        if (cannon.GetComponent<CannonController>().isMoving == false)
+        if (cannon.GetComponent<CannonController>().getIsMoving() == false)
         {
             if (shootTime < 0)
             {

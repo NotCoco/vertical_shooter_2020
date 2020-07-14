@@ -372,10 +372,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbd4226928a720746bff93d3ebdcb310, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMoving: 0
   currentHealth: 5
   outerJoy: {fileID: 1535574534}
   innerJoy: {fileID: 289227747}
-  speed: 0.0000001
+  cameraDistance: 10
+  speed: 0.08
 --- !u!1 &1037882814
 GameObject:
   m_ObjectHideFlags: 0
