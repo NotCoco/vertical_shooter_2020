@@ -66,7 +66,7 @@ public class CannonController : MonoBehaviour
             Vector2 t = transform.position;
             if (offset.magnitude > 30.00f)
             {
-                rigbody.MovePosition(t + direction * speed);
+                rigbody.MovePosition(t + direction * speed * Time.deltaTime);
             }
             Vector2 realPos = new Vector2(startJPos.x + direction.x * Mathf.Abs(offset2.x), startJPos.y + direction.y * Mathf.Abs(offset2.y));
 

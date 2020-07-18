@@ -18,9 +18,7 @@ public class AimController : MonoBehaviour
         objects = new ArrayList();
         aimTransform = transform.Find("Cannon_Head");
         aimDirection = new Vector3(0, 0, -10);
-        //aimTransform = transform.Find("Aim");
-        //T[] asList = GameObject.FindObjectsOfType<Enemy>();
-        //objects = new ArrayList(asList);
+
     }
 
     public static void AddToList(Enemy enemy)

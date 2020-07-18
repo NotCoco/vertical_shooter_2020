@@ -188,6 +188,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Box (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3726775289690320586, guid: 81ccc75af67e53945afe928698432108,
+        type: 3}
+      propertyPath: cannon
+      value: 
+      objectReference: {fileID: 715712008}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81ccc75af67e53945afe928698432108, type: 3}
 --- !u!1 &289227745
@@ -200,7 +205,7 @@ GameObject:
   m_Component:
   - component: {fileID: 289227747}
   - component: {fileID: 289227746}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: InnerJ
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -418,10 +423,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMoving: 0
   currentHealth: 5
+  maxHealth: 5
   outerJoy: {fileID: 1535574534}
   innerJoy: {fileID: 289227747}
   cameraDistance: 10
-  speed: 0.08
+  speed: 3
+  timeInvincible: 2
 --- !u!1 &1037882814
 GameObject:
   m_ObjectHideFlags: 0
@@ -612,6 +619,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Box
       objectReference: {fileID: 0}
+    - target: {fileID: 3726775289690320586, guid: 81ccc75af67e53945afe928698432108,
+        type: 3}
+      propertyPath: cannon
+      value: 
+      objectReference: {fileID: 715712008}
     m_RemovedComponents:
     - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 81ccc75af67e53945afe928698432108, type: 3}
@@ -669,7 +681,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1535574534}
   - component: {fileID: 1535574533}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: OuterJ
   m_TagString: Untagged
   m_Icon: {fileID: 0}
