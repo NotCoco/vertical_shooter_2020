@@ -27,10 +27,20 @@ public class CannonController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (isInvincible)
+        {
+            invincibleTimer -= Time.deltaTime;
+            if (invincibleTimer < 0)
+                isInvincible = false;
+        }
+    }
+
+    private void FixedUpdate()
+    {
         if (Input.GetMouseButtonDown(0))
         { // when the screen is initially tapped
             setTouchStart(true);
-            setIsMoving(true);
 
             startJPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
             innerJoy.transform.position = screenToWorldCoordinates(new Vector2(startJPos.x, startJPos.y));
@@ -48,25 +58,16 @@ public class CannonController : MonoBehaviour
             setTouchStart(false);
             setIsMoving(false);
         }
-        if (isInvincible)
-        {
-            invincibleTimer -= Time.deltaTime;
-            if (invincibleTimer < 0)
-                isInvincible = false;
-        }
-    }
-
-    private void FixedUpdate()
-    {
         if (touchStart)
         {
             Vector2 offset = endJPos - startJPos;
             Vector2 direction = Vector2.ClampMagnitude(offset, 1.0f);
             Vector2 offset2 = Vector2.ClampMagnitude(offset, 35.0f); // determines how far the inner joystick can move
             Vector2 t = transform.position;
-            if (offset.magnitude > 30.00f)
+            if (offset.magnitude > 7.00f || isMoving)
             {
                 rigbody.MovePosition(t + direction * speed * Time.deltaTime);
+                setIsMoving(true);
             }
             Vector2 realPos = new Vector2(startJPos.x + direction.x * Mathf.Abs(offset2.x), startJPos.y + direction.y * Mathf.Abs(offset2.y));
 

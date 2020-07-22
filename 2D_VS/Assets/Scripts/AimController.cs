@@ -11,7 +11,7 @@ public class AimController : MonoBehaviour
     private Enemy closestEnemy;
     private Vector3 aimDirection;
     float shootTime = 1.00f;
-    float retarget_time = 0.20f;
+    float retarget_time = -1;
     void Awake()
     {
 
@@ -33,7 +33,6 @@ public class AimController : MonoBehaviour
 
     void Start()
     {
-        closestEnemy = FindClosestEnemy();
     }
     void Update()
     {

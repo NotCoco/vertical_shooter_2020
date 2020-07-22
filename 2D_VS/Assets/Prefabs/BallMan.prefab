@@ -278,3 +278,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cannon: {fileID: 1166871712096314360}
+  projectilePref: {fileID: 0}
