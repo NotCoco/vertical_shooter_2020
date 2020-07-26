@@ -17,8 +17,12 @@ public class Enemy : MonoBehaviour
     public GameObject tilemap;
     private Tilemap tMap;
     private Pathfinder pathfinder;
-    private Stack<Tuple<int, int>> latestPath;
+    public Stack<Tuple<int, int>> latestPath;
     private Locator locator;
+    private Rigidbody2D rigidbody;
+    private Vector3 oldPos;
+    LayerMask mask;
+    int bugCounter = 0;
     // Start is called before the first frame update
     void Awake()
     {
@@ -33,21 +37,29 @@ public class Enemy : MonoBehaviour
         pathfinder = tilemap.GetComponent<Pathfinder>();
         latestPath = getPathToCannon();
         locator = transform.GetChild(0).GetComponent<Locator>();
+        rigidbody = gameObject.GetComponent<Rigidbody2D>();
+        mask = LayerMask.GetMask("Battleground", "Tilemap");
+        oldPos = new Vector3(0, 0, 0);
     }
 
     // Update is called once per frame
     void Update()
     {
         lookTowardsCannon();
-        if (pathing == true && pathingTimer < 0)
-        {
-            latestPath = getPathToCannon();
-            pathingTimer = 10f;
-        }
-        else
-        {
-            pathingTimer -= Time.deltaTime;
-        }
+        // if (pathing == true && pathingTimer < 0)
+        // {
+        //     latestPath = getPathToCannon();
+        //     pathingTimer = 10f;
+        // }
+        // else
+        // {
+        //     pathingTimer -= Time.deltaTime;
+        // }
+
+    }
+
+    void FixedUpdate()
+    {
         if (pathing == true)
         {
             if (!locator.seeCannon)
@@ -56,26 +68,44 @@ public class Enemy : MonoBehaviour
                 {
                     var targetPoint2 = latestPath.Peek();
                     Vector3 targetPoint = tMap.CellToWorld(new Vector3Int(pathfinder.mapToTile_X(targetPoint2.Item1), pathfinder.mapToTile_Y(targetPoint2.Item2), 0));
-                    if (transform.position.x == targetPoint.x && transform.position.y == targetPoint.y)
+                    targetPoint.x += 0.151909f;
+                    targetPoint.y += 0.161415f;
+                    if (rigidbody.position.x == targetPoint.x && rigidbody.position.y == targetPoint.y)
                     {
                         latestPath.Pop();
                     }
                     else
                     {
-                        transform.position = Vector3.MoveTowards(transform.position, new Vector3(targetPoint.x, targetPoint.y, 0), speed * Time.deltaTime);
-                        //Debug.Log("hi 124455");
+                        if (targetPoint == oldPos)
+                        {
+                            bugCounter++;
+                        }
+                        if (bugCounter < 120)
+                        {
+                            rigidbody.position = Vector3.MoveTowards(rigidbody.position, new Vector3(targetPoint.x, targetPoint.y, 0), speed * 1.70f * Time.deltaTime);
+                        }
+                        else
+                        {
+                            latestPath.Pop();
+                            bugCounter = 0;
+                        }
+                        Debug.Log(targetPoint);
                     }
+                    oldPos = targetPoint;
+                }
+                else
+                {
+                    latestPath = getPathToCannon();
+                    Debug.Log("I'm stuck lol");
                 }
             }
             else
             {
-                transform.position = Vector3.MoveTowards(transform.position, locator.cannonPos, speed * Time.deltaTime);
+                latestPath.Clear();
+                rigidbody.position = Vector3.MoveTowards(rigidbody.position, locator.cannonPos, speed * 1.70f * Time.deltaTime);
+
             }
         }
-    }
-
-    void FixedUpdate()
-    {
         if (attackTimer < 0 && !attacking)
         {
             attacking = true;
@@ -84,8 +114,6 @@ public class Enemy : MonoBehaviour
         else if (attacking)
         {
 
-
-            //Debug.DrawRay(transform.position, newDirection, Color.red);
             attackTimer = 2.00f;
         }
         else
@@ -94,12 +122,13 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    Stack<Tuple<int, int>> getPathToCannon()
+    public Stack<Tuple<int, int>> getPathToCannon()
     {
         Vector3Int enemyPos = tMap.WorldToCell(transform.position);
         Vector3Int cPos = tMap.WorldToCell(cannon.transform.position);
         Stack<Tuple<int, int>> path = pathfinder.aStarSearch(Tuple.Create(enemyPos.x, enemyPos.y), Tuple.Create(cPos.x, cPos.y));
         pathfinder.printPath(path);
+        latestPath = path;
         return path;
     }
 

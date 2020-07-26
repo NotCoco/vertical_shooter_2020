@@ -153,6 +153,26 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3041977405747392694, guid: 81ccc75af67e53945afe928698432108,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: 0.016757786
+      objectReference: {fileID: 0}
+    - target: {fileID: 3041977405747392694, guid: 81ccc75af67e53945afe928698432108,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.7131394
+      objectReference: {fileID: 0}
+    - target: {fileID: 3041977405747392694, guid: 81ccc75af67e53945afe928698432108,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: 0.057967424
+      objectReference: {fileID: 0}
+    - target: {fileID: 3041977405747392694, guid: 81ccc75af67e53945afe928698432108,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 1.70892
+      objectReference: {fileID: 0}
     - target: {fileID: 3041977405747392698, guid: 81ccc75af67e53945afe928698432108,
         type: 3}
       propertyPath: m_Name
@@ -176,7 +196,7 @@ PrefabInstance:
     - target: {fileID: 3726775289690320586, guid: 81ccc75af67e53945afe928698432108,
         type: 3}
       propertyPath: speed
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3726775289690320586, guid: 81ccc75af67e53945afe928698432108,
         type: 3}
@@ -435,12 +455,12 @@ PrefabInstance:
     - target: {fileID: 3041977405747392692, guid: 81ccc75af67e53945afe928698432108,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.76
+      value: 1.28
       objectReference: {fileID: 0}
     - target: {fileID: 3041977405747392692, guid: 81ccc75af67e53945afe928698432108,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.13
+      value: 3.68
       objectReference: {fileID: 0}
     - target: {fileID: 3041977405747392692, guid: 81ccc75af67e53945afe928698432108,
         type: 3}
@@ -492,6 +512,16 @@ PrefabInstance:
       propertyPath: aim
       value: 
       objectReference: {fileID: 1199635669}
+    - target: {fileID: 3726775289690320586, guid: 81ccc75af67e53945afe928698432108,
+        type: 3}
+      propertyPath: pathing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3726775289690320586, guid: 81ccc75af67e53945afe928698432108,
+        type: 3}
+      propertyPath: speed
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 81ccc75af67e53945afe928698432108, type: 3}
@@ -591,7 +621,7 @@ GameObject:
   - component: {fileID: 1583339428}
   - component: {fileID: 1583339427}
   - component: {fileID: 1583339429}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5286,7 +5316,7 @@ CompositeCollider2D:
   m_GameObject: {fileID: 1583339422}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 9f5f89bb03efb0043a4b2311bb50c802, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0

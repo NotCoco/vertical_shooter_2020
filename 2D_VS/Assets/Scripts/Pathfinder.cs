@@ -14,7 +14,7 @@ public class Pathfinder : MonoBehaviour
     int Min_Y = -15;
     int Max_Y = 16;
     BoundsInt bounds;
-    private float dislikeCost = 1.50f;
+    private float dislikeCost = 100.00f;
 
     //List<List<A_Tile>> map;
     // Start is called before the first frame update

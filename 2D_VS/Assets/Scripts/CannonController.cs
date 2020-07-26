@@ -18,6 +18,7 @@ public class CannonController : MonoBehaviour
     public float timeInvincible = 2.0f;
     bool isInvincible;
     float invincibleTimer;
+    int touchCounter = 0;
     void Start()
     {
         rigbody = GetComponent<Rigidbody2D>();
@@ -27,21 +28,11 @@ public class CannonController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (isInvincible)
-        {
-            invincibleTimer -= Time.deltaTime;
-            if (invincibleTimer < 0)
-                isInvincible = false;
-        }
-    }
-
-    private void FixedUpdate()
-    {
         if (Input.GetMouseButtonDown(0))
         { // when the screen is initially tapped
             setTouchStart(true);
-
+            touchCounter++;
+            Debug.Log("Clicks: " + touchCounter);
             startJPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
             innerJoy.transform.position = screenToWorldCoordinates(new Vector2(startJPos.x, startJPos.y));
             outerJoy.transform.position = screenToWorldCoordinates(new Vector2(startJPos.x, startJPos.y));
@@ -58,6 +49,16 @@ public class CannonController : MonoBehaviour
             setTouchStart(false);
             setIsMoving(false);
         }
+        if (isInvincible)
+        {
+            invincibleTimer -= Time.deltaTime;
+            if (invincibleTimer < 0)
+                isInvincible = false;
+        }
+    }
+
+    private void FixedUpdate()
+    {
         if (touchStart)
         {
             Vector2 offset = endJPos - startJPos;
