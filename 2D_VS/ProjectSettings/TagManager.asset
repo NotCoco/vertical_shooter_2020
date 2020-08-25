@@ -14,11 +14,11 @@ TagManager:
   - 
   - 
   - Projectile
-  - Battleground
+  - CannonLayer
   - Joystick
   - Tilemap
-  - 
-  - 
+  - CircleLayer
+  - EnemyLayer
   - 
   - 
   - 

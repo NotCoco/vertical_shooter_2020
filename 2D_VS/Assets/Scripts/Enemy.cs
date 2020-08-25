@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
 {
     public int collisionDamage = 1;
     public int attackDamage = 1;
-    public float attackTimer = 2.00f;
+    public float attackTimer = 4.00f;
     private bool attacking = false;
     public float speed;
     public bool pathing;
@@ -20,7 +20,6 @@ public class Enemy : MonoBehaviour
     public Stack<Tuple<int, int>> latestPath;
     private Locator locator;
     private Rigidbody2D rigidbody;
-    private Vector3 oldPos;
     LayerMask mask;
     int bugCounter = 0;
     // Start is called before the first frame update
@@ -38,23 +37,13 @@ public class Enemy : MonoBehaviour
         latestPath = getPathToCannon();
         locator = transform.GetChild(0).GetComponent<Locator>();
         rigidbody = gameObject.GetComponent<Rigidbody2D>();
-        mask = LayerMask.GetMask("Battleground", "Tilemap");
-        oldPos = new Vector3(0, 0, 0);
+        mask = LayerMask.GetMask("CannonLayer", "Tilemap");
     }
 
     // Update is called once per frame
     void Update()
     {
         lookTowardsCannon();
-        // if (pathing == true && pathingTimer < 0)
-        // {
-        //     latestPath = getPathToCannon();
-        //     pathingTimer = 10f;
-        // }
-        // else
-        // {
-        //     pathingTimer -= Time.deltaTime;
-        // }
 
     }
 
@@ -64,61 +53,52 @@ public class Enemy : MonoBehaviour
         {
             if (!locator.seeCannon)
             {
-                if (latestPath.Count != 0)
-                {
-                    var targetPoint2 = latestPath.Peek();
-                    Vector3 targetPoint = tMap.CellToWorld(new Vector3Int(pathfinder.mapToTile_X(targetPoint2.Item1), pathfinder.mapToTile_Y(targetPoint2.Item2), 0));
-                    targetPoint.x += 0.151909f;
-                    targetPoint.y += 0.161415f;
-                    if (rigidbody.position.x == targetPoint.x && rigidbody.position.y == targetPoint.y)
-                    {
-                        latestPath.Pop();
-                    }
-                    else
-                    {
-                        if (targetPoint == oldPos)
-                        {
-                            bugCounter++;
-                        }
-                        if (bugCounter < 120)
-                        {
-                            rigidbody.position = Vector3.MoveTowards(rigidbody.position, new Vector3(targetPoint.x, targetPoint.y, 0), speed * 1.70f * Time.deltaTime);
-                        }
-                        else
-                        {
-                            latestPath.Pop();
-                            bugCounter = 0;
-                        }
-                        Debug.Log(targetPoint);
-                    }
-                    oldPos = targetPoint;
-                }
-                else
-                {
-                    latestPath = getPathToCannon();
-                    Debug.Log("I'm stuck lol");
-                }
+                aStarPath();
             }
             else
             {
                 latestPath.Clear();
-                rigidbody.position = Vector3.MoveTowards(rigidbody.position, locator.cannonPos, speed * 1.70f * Time.deltaTime);
-
+                Vector2 r = new Vector2(locator.cannonPos.x, locator.cannonPos.y);
+                //if ((r - rigidbody.position).magnitude > 4.00f)
+                //{
+                rigidbody.position = Vector3.MoveTowards(rigidbody.position, locator.cannonPos, speed * 2.00f * Time.deltaTime);
+                //}
+                // else
+                // {
+                //     if (attackTimer < 0)
+                //     {
+                //         rigidbody.position = Vector3.MoveTowards(rigidbody.position, locator.cannonPos, speed * 19.00f * Time.deltaTime);
+                //         attackTimer = 4.00f;
+                //     }
+                //     attackTimer -= Time.deltaTime;
+                // }
             }
         }
-        if (attackTimer < 0 && !attacking)
-        {
-            attacking = true;
 
-        }
-        else if (attacking)
-        {
+    }
 
-            attackTimer = 2.00f;
+    void aStarPath()
+    {
+        if (latestPath.Count != 0)
+        {
+            var targetPoint2 = latestPath.Peek();
+            Vector3 targetPoint = tMap.CellToWorld(new Vector3Int(pathfinder.mapToTile_X(targetPoint2.Item1), pathfinder.mapToTile_Y(targetPoint2.Item2), 0));
+            targetPoint.x += 0.151909f;
+            targetPoint.y += 0.161415f;
+            if (rigidbody.position.x == targetPoint.x && rigidbody.position.y == targetPoint.y)
+            {
+                latestPath.Pop();
+            }
+            else
+            {
+                rigidbody.position = Vector3.MoveTowards(rigidbody.position, new Vector3(targetPoint.x, targetPoint.y, 0), speed * 1.70f * Time.deltaTime);
+                Debug.Log("im here");
+            }
         }
         else
         {
-            attackTimer -= Time.deltaTime;
+            latestPath = getPathToCannon();
+            Debug.Log("I'm stuck lol");
         }
     }
 

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3041977405747392694}
   - component: {fileID: 3726775289690320586}
   - component: {fileID: 3464609475194298927}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Enemy_Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,8 +162,9 @@ GameObject:
   - component: {fileID: 8893682608571094380}
   - component: {fileID: 3422697161513946350}
   - component: {fileID: 547385336501087570}
-  m_Layer: 0
-  m_Name: GameObject
+  - component: {fileID: 5543460231361778335}
+  m_Layer: 12
+  m_Name: CircleCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -247,3 +248,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!58 &5543460231361778335
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5141178263886346136}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: 9f5f89bb03efb0043a4b2311bb50c802, type: 2}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.83918285

@@ -13,7 +13,7 @@ public class Locator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mask = LayerMask.GetMask("Battleground", "Tilemap");
+        mask = LayerMask.GetMask("CannonLayer", "Tilemap");
         parent = gameObject.transform.parent.gameObject.GetComponent<Enemy>();
     }
 
@@ -21,7 +21,7 @@ public class Locator : MonoBehaviour
     void Update()
     {
 
-        transform.Rotate(new Vector3(0, 0, 700.00f * Time.deltaTime));
+        transform.Rotate(new Vector3(0, 0, 2000.00f * Time.deltaTime));
         RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.up), 2000.00f, mask);
         if (hit.collider != null)
         {
