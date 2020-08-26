@@ -44,7 +44,6 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         lookTowardsCannon();
-
     }
 
     void FixedUpdate()
@@ -107,6 +106,7 @@ public class Enemy : MonoBehaviour
         Vector3Int enemyPos = tMap.WorldToCell(transform.position);
         Vector3Int cPos = tMap.WorldToCell(cannon.transform.position);
         Stack<Tuple<int, int>> path = pathfinder.aStarSearch(Tuple.Create(enemyPos.x, enemyPos.y), Tuple.Create(cPos.x, cPos.y));
+        path.Pop();
         pathfinder.printPath(path);
         latestPath = path;
         return path;
