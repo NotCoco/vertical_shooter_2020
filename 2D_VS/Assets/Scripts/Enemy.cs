@@ -8,8 +8,11 @@ public class Enemy : MonoBehaviour
 {
     public int collisionDamage = 1;
     public int attackDamage = 1;
-    public float attackTimer = 4.00f;
-    private bool attacking = false;
+    public float dashWait = 4.00f;
+    public float dashTimer = 1.00f;
+    private bool waiting = false;
+    private bool dashing = false;
+
     public float speed;
     public bool pathing;
     private float pathingTimer = 10.0f;
@@ -58,19 +61,33 @@ public class Enemy : MonoBehaviour
             {
                 latestPath.Clear();
                 Vector2 r = new Vector2(locator.cannonPos.x, locator.cannonPos.y);
-                //if ((r - rigidbody.position).magnitude > 4.00f)
-                //{
-                rigidbody.position = Vector3.MoveTowards(rigidbody.position, locator.cannonPos, speed * 2.00f * Time.deltaTime);
-                //}
-                // else
-                // {
-                //     if (attackTimer < 0)
-                //     {
-                //         rigidbody.position = Vector3.MoveTowards(rigidbody.position, locator.cannonPos, speed * 19.00f * Time.deltaTime);
-                //         attackTimer = 4.00f;
-                //     }
-                //     attackTimer -= Time.deltaTime;
-                // }
+                if ((r - rigidbody.position).magnitude > 4.00f)
+                {
+                    rigidbody.position = Vector3.MoveTowards(rigidbody.position, locator.cannonPos, speed * 2.00f * Time.deltaTime);
+                }
+                else
+                {
+                    if (dashing && dashTimer >= 0)
+                    {
+                        rigidbody.position = Vector3.MoveTowards(rigidbody.position, locator.cannonPos, speed * 6.00f * Time.deltaTime);
+                        dashTimer -= Time.deltaTime;
+                    }
+                    else
+                    {
+                        dashing = false;
+                        dashTimer = 1.00f;
+
+                    }
+                    if (dashWait < 0)
+                    {
+                        dashing = true;
+                        dashWait = 4.00f;
+                    }
+                    if (!dashing)
+                    {
+                        dashWait -= Time.deltaTime;
+                    }
+                }
             }
         }
 
