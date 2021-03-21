@@ -6,16 +6,20 @@ using System;
 
 public class Enemy : MonoBehaviour
 {
+    public int maxHealth = 5;
+    public int currentHealth;
     public int collisionDamage = 1;
     public int attackDamage = 1;
-    public float dashWait = 4.00f;
+    public float dashWait = 2.00f;
     public float dashTimer = 1.00f;
     private bool waiting = false;
     private bool dashing = false;
-
+    private float DASHTIMER = 1.30f;
+    private float TARGETRANGE = 4.00f;
     public float speed;
     public bool pathing;
     private float pathingTimer = 10.0f;
+    private Vector3 cannonPreDashPos;
     public GameObject cannon;
     public GameObject tilemap;
     private Tilemap tMap;
@@ -28,7 +32,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-
+        currentHealth = maxHealth;
     }
     void Start()
     {
@@ -41,6 +45,7 @@ public class Enemy : MonoBehaviour
         locator = transform.GetChild(0).GetComponent<Locator>();
         rigidbody = gameObject.GetComponent<Rigidbody2D>();
         mask = LayerMask.GetMask("CannonLayer", "Tilemap");
+        cannonPreDashPos = new Vector3(0, 0, 0); // this vector represents the line the enemy will dash across 
     }
 
     // Update is called once per frame
@@ -61,15 +66,17 @@ public class Enemy : MonoBehaviour
             {
                 latestPath.Clear();
                 Vector2 r = new Vector2(locator.cannonPos.x, locator.cannonPos.y);
-                if ((r - rigidbody.position).magnitude > 4.00f)
+
+                if ((r - rigidbody.position).magnitude > TARGETRANGE)
                 {
+                    dashWait = DASHTIMER;
                     rigidbody.position = Vector3.MoveTowards(rigidbody.position, locator.cannonPos, speed * 2.00f * Time.deltaTime);
                 }
                 else
                 {
                     if (dashing && dashTimer >= 0)
                     {
-                        rigidbody.position = Vector3.MoveTowards(rigidbody.position, locator.cannonPos, speed * 6.00f * Time.deltaTime);
+                        rigidbody.position = Vector3.MoveTowards(rigidbody.position, cannonPreDashPos, speed * 10.00f * Time.deltaTime);
                         dashTimer -= Time.deltaTime;
                     }
                     else
@@ -80,13 +87,15 @@ public class Enemy : MonoBehaviour
                     }
                     if (dashWait < 0)
                     {
+                        cannonPreDashPos = locator.cannonPos;
                         dashing = true;
-                        dashWait = 4.00f;
+                        dashWait = DASHTIMER;
                     }
                     if (!dashing)
                     {
                         dashWait -= Time.deltaTime;
                     }
+
                 }
             }
         }
@@ -108,13 +117,11 @@ public class Enemy : MonoBehaviour
             else
             {
                 rigidbody.position = Vector3.MoveTowards(rigidbody.position, new Vector3(targetPoint.x, targetPoint.y, 0), speed * 1.70f * Time.deltaTime);
-                Debug.Log("im here");
             }
         }
         else
         {
             latestPath = getPathToCannon();
-            Debug.Log("I'm stuck lol");
         }
     }
 
@@ -142,7 +149,16 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
-    void OnCollisionStay2D(Collision2D other)
+    public void changeHealth(int damage)
+    {
+        currentHealth = Mathf.Clamp(currentHealth + damage, 0, maxHealth);
+        if (currentHealth == 0)
+        {
+            Destroy();
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
     {
         CannonController cannon = other.gameObject.GetComponent<CannonController>();
         if (cannon != null)

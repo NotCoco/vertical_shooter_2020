@@ -8,6 +8,7 @@ public class CannonController : MonoBehaviour
     private Vector2 endJPos; // the ending position
     private bool touchStart = false; // joystick movement bool
     public bool isMoving = false;
+    public bool isAttacking = true;
     private Rigidbody2D rigbody;
     public int currentHealth;
     public int maxHealth = 5;
@@ -30,9 +31,9 @@ public class CannonController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         { // when the screen is initially tapped
+            isAttacking = false;
             setTouchStart(true);
             touchCounter++;
-            Debug.Log("Clicks: " + touchCounter);
             startJPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
             innerJoy.transform.position = screenToWorldCoordinates(new Vector2(startJPos.x, startJPos.y));
             outerJoy.transform.position = screenToWorldCoordinates(new Vector2(startJPos.x, startJPos.y));
@@ -46,6 +47,7 @@ public class CannonController : MonoBehaviour
         }
         else
         {
+            isAttacking = true;
             setTouchStart(false);
             setIsMoving(false);
         }

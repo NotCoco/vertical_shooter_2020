@@ -26,7 +26,7 @@ public class Pathfinder : MonoBehaviour
     }
     void Start()
     {
-        Debug.Log(tilemap.GetColliderType(new Vector3Int(-8, 0, 0)));
+
     }
 
     List<List<A_Tile>> makeMap()

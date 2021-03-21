@@ -23,11 +23,18 @@ public class Projectile : MonoBehaviour
 
     public void Launch(Vector3 direction, float force)
     {
+
         rigidbody2d.AddForce(direction * force);
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        Enemy e = other.gameObject.GetComponent<Enemy>();
+        if (e != null)
+        {
+            e.changeHealth(-2);
+        }
+
         Destroy(gameObject);
     }
 }

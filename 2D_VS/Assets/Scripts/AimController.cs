@@ -10,7 +10,7 @@ public class AimController : MonoBehaviour
     public GameObject projectilePref;
     private Enemy closestEnemy;
     private Vector3 aimDirection;
-    float shootTime = 1.00f;
+    float shootTime = 0.650f;
     float retarget_time = -1;
     void Awake()
     {
@@ -36,27 +36,32 @@ public class AimController : MonoBehaviour
     }
     void Update()
     {
+
         if (retarget_time < 0)
         {
             closestEnemy = FindClosestEnemy();
             retarget_time = 0.20f;
-        }
-        Vector3 enemyPosition = closestEnemy.transform.position;
-        aimDirection = (enemyPosition - cannon.transform.position).normalized;
-        float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
-        aimTransform.eulerAngles = new Vector3(0, 0, angle - 90);
 
-        if (cannon.GetComponent<CannonController>().getIsMoving() == false)
+        }
+        if (closestEnemy != null)
+        {
+            Vector3 enemyPosition = closestEnemy.transform.position;
+            aimDirection = (enemyPosition - cannon.transform.position).normalized;
+            float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+            aimTransform.eulerAngles = new Vector3(0, 0, angle - 90);
+        }
+
+        if (cannon.GetComponent<CannonController>().getIsMoving() == false && cannon.GetComponent<CannonController>().isAttacking)
         {
             if (shootTime < 0)
             {
                 Launch(aimDirection);
-                shootTime = 1.00f;
+                shootTime = 0.650f;
             }
         }
         else
         { // allows strafe shooting
-            shootTime = 0.5f;
+            shootTime = 0.325f;
         }
         shootTime -= Time.deltaTime;
         retarget_time -= Time.deltaTime;
